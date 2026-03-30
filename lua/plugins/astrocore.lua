@@ -1,4 +1,4 @@
-if true then return {} end -- WARN: REMOVE THIS LINE TO ACTIVATE THIS FILE
+-- if true then return {} end -- WARN: REMOVE THIS LINE TO ACTIVATE THIS FILE
 
 -- AstroCore provides a central place to modify mappings, vim options, autocommands, and more!
 -- Configuration documentation can be found with `:h astrocore`
@@ -24,17 +24,27 @@ return {
       virtual_text = true,
       underline = true,
     },
+    rooter = {
+      detector = {
+        "lsp", -- highest priority is getting workspace from running language servers
+        { ".git", "_darcs", ".hg", ".bzr", ".svn" }, -- next check for a version controlled parent directory
+        { "lua", "MakeFile", "package.json" }, -- lastly check for known project root files
+      },
+      autochdir = true, -- set working directory to project root
+      scope = "global", -- project root detection scope
+      notify = true, -- show notification when project root is detected
+    },
     -- passed to `vim.filetype.add`
     filetypes = {
       -- see `:h vim.filetype.add` for usage
       extension = {
-        foo = "fooscript",
+        -- foo = "fooscript",
       },
       filename = {
-        [".foorc"] = "fooscript",
+        -- [".foorc"] = "fooscript",
       },
       pattern = {
-        [".*/etc/foo/.*"] = "fooscript",
+        -- [".*/etc/foo/.*"] = "fooscript",
       },
     },
     -- vim options can be configured here
@@ -45,6 +55,9 @@ return {
         spell = false, -- sets vim.opt.spell
         signcolumn = "yes", -- sets vim.opt.signcolumn to yes
         wrap = false, -- sets vim.opt.wrap
+        conceallevel = 0, -- so that `` is visible in markdown files
+        colorcolumn = "", -- sets vim.opt.colorcolumn to 999
+        scrolloff = 5, -- minimum number of lines to keep above and below the cursor
       },
       g = { -- vim.g.<key>
         -- configure global vim variables (vim.g)
@@ -52,34 +65,47 @@ return {
         -- This can be found in the `lua/lazy_setup.lua` file
       },
     },
+    sessions = {
+      -- Configure auto saving
+      autosave = {
+        last = true, -- auto save last session
+        cwd = true, -- auto save session for each working directory
+      },
+      -- Patterns to ignore when saving sessions
+      ignore = {
+        dirs = {}, -- working directories to ignore sessions in
+        filetypes = { "gitcommit", "gitrebase" }, -- filetypes to ignore sessions
+        buftypes = {}, -- buffer types to ignore sessions
+      },
+    },
     -- Mappings can be configured through AstroCore as well.
     -- NOTE: keycodes follow the casing in the vimdocs. For example, `<Leader>` must be capitalized
     mappings = {
       -- first key is the mode
-      n = {
-        -- second key is the lefthand side of the map
-
-        -- navigate buffer tabs
-        ["]b"] = { function() require("astrocore.buffer").nav(vim.v.count1) end, desc = "Next buffer" },
-        ["[b"] = { function() require("astrocore.buffer").nav(-vim.v.count1) end, desc = "Previous buffer" },
-
-        -- mappings seen under group name "Buffer"
-        ["<Leader>bd"] = {
-          function()
-            require("astroui.status.heirline").buffer_picker(
-              function(bufnr) require("astrocore.buffer").close(bufnr) end
-            )
-          end,
-          desc = "Close buffer from tabline",
-        },
-
-        -- tables with just a `desc` key will be registered with which-key if it's installed
-        -- this is useful for naming menus
-        -- ["<Leader>b"] = { desc = "Buffers" },
-
-        -- setting a mapping to false will disable it
-        -- ["<C-S>"] = false,
-      },
+      -- n = {
+      --   -- second key is the lefthand side of the map
+      --
+      --   -- navigate buffer tabs
+      --   ["]b"] = { function() require("astrocore.buffer").nav(vim.v.count1) end, desc = "Next buffer" },
+      --   ["[b"] = { function() require("astrocore.buffer").nav(-vim.v.count1) end, desc = "Previous buffer" },
+      --
+      --   -- mappings seen under group name "Buffer"
+      --   ["<Leader>bd"] = {
+      --     function()
+      --       require("astroui.status.heirline").buffer_picker(
+      --         function(bufnr) require("astrocore.buffer").close(bufnr) end
+      --       )
+      --     end,
+      --     desc = "Close buffer from tabline",
+      --   },
+      --
+      --   -- tables with just a `desc` key will be registered with which-key if it's installed
+      --   -- this is useful for naming menus
+      --   -- ["<Leader>b"] = { desc = "Buffers" },
+      --
+      --   -- setting a mapping to false will disable it
+      --   -- ["<C-S>"] = false,
+      -- },
     },
   },
 }
