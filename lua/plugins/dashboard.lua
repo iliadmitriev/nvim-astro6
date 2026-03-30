@@ -3,7 +3,7 @@ return {
   {
     "folke/snacks.nvim",
     keys = {
-      { "<leader>e", function() require("snacks.picker").explorer() end, desc = "File Explorer" },
+      -- { "<leader>e", function() require("snacks.picker").explorer() end, desc = "File Explorer" },
     },
     ---@type snacks.Config
     opts = {

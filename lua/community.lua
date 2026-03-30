@@ -40,6 +40,7 @@ return {
 
   { import = "astrocommunity.recipes.picker-lsp-mappings" },
   { import = "astrocommunity.fuzzy-finder.snacks-picker" },
+  { import = "astrocommunity.file-explorer.oil-nvim" },
 
   { import = "astrocommunity.utility.noice-nvim" },
   { import = "astrocommunity.utility.telescope-live-grep-args-nvim" },
